@@ -29,7 +29,7 @@ const OurServices = () => {
         },
     ]
     return (
-        <div className='mx-4 p-20 my-16 bg-secondary rounded-2xl'>
+        <div className='mx-4 p-6 md:p-20 my-16 bg-secondary rounded-2xl'>
             <div className='text-center space-y-4 pb-10'>
                 <h2 className='text-3xl font-bold text-white'>Our Services</h2>
                 <p className='text-white'>Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle. From personal packages to <br className='hidden md:flex' /> business shipments — we deliver on time, every time.</p>
