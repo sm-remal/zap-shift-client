@@ -43,7 +43,7 @@ const Coverage = () => {
                     />
                     <button
                         // onClick={handleSearch}
-                        className="bg-lime-400 hover:bg-lime-500 active:bg-lime-600 text-gray-800 font-semibold py-3 px-6 md:py-4 md:px-8 
+                        className="bg-primary hover:bg-lime-300 active:bg-lime-600 text-gray-800 font-semibold py-3 px-6 md:py-4 md:px-8 
                      rounded-tl-none rounded-bl-none rounded-tr-full rounded-br-full  cursor-pointer
                      transition-colors duration-200 text-base md:text-lg 
                      focus:outline-none"

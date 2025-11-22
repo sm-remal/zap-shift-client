@@ -159,7 +159,7 @@ const About = () => {
     <div className="flex justify-center items-center min-h-screen p-4 sm:p-8 my-10">
       
       {/* --- Main Card Container --- */}
-      <div className="w-full max-w-5xl bg-white rounded-xl p-8 md:p-12 shadow-2xl">
+      <div className="w-full max-w-5xl bg-white rounded-xl p-8 md:p-12">
         
         {/* --- Header Section --- */}
         <header className="mb-10">

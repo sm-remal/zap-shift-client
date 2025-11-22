@@ -5,15 +5,26 @@ import authImage from "../assets/authImage.png"
 
 const AuthLayout = () => {
     return (
-        <div className='flex flex-col min-h-screen bg-base-300 max-w-screen-2xl m-auto max-xl:max-w-7xl max-lg:max-w-5xl max-md:max-w-3xl max-sm:max-w-screen-sm'>
-            <Logo></Logo>
-            <div className='flex justify-center items-center'>
-                <div className='flex-1 border-2 border-red-600'>
-                    <Outlet></Outlet>
+         <div className='min-h-screen bg-base-300 flex flex-col'>
+
+            <div className="max-w-screen-2xl w-full mx-auto px-4 sm:px-6 lg:px-8">
+
+                <Logo />
+
+                <div className='flex flex-col md:flex-row min-h-screen'>
+
+                    {/* LEFT SIDE FORM */}
+                    <div className='flex-1 min-h-[60vh] md:min-h-screen flex justify-center items-center'>
+                        <Outlet />
+                    </div>
+
+                    {/* RIGHT SIDE IMAGE */}
+                    <div className='flex-1 min-h-[40vh] md:min-h-screen bg-green-50 hidden md:flex justify-center items-center'>
+                        <img src={authImage} alt="" className="w-full h-auto" />
+                    </div>
+
                 </div>
-                <div className='flex-1 border-2 border-green-600'>
-                    <img src={authImage} alt="" />
-                </div>
+
             </div>
         </div>
     );
