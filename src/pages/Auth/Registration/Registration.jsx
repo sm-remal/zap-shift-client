@@ -6,8 +6,9 @@ import { Link } from 'react-router';
 
 const Registration = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const { register, handleSubmit, formState: { errors } } = useForm()
+     const { createUser, updateUserProfile, googleSignIn } = useAuth();
 
     const handleRegistration = (data) => {
         console.log(data)
