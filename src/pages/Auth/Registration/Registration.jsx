@@ -3,15 +3,22 @@ import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { Link } from 'react-router';
+import useAuth from '../../../hooks/useAuth';
 
 const Registration = () => {
     const [showPassword, setShowPassword] = useState(false);
     const { register, handleSubmit, formState: { errors } } = useForm();
 
-     const { createUser, updateUserProfile, googleSignIn } = useAuth();
+    const { createUser, updateUserProfile, googleSignIn } = useAuth();
 
     const handleRegistration = (data) => {
-        console.log(data)
+        createUser(data.email, data.password)
+            .then((res) =>{
+                console.log(res.user);
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     return (
