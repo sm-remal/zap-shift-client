@@ -20,6 +20,15 @@ const Login = () => {
                 console.log(error)
             })
     }
+    const handleGoogleSignIn = () => {
+        googleSignIn()
+            .then(res => {
+                console.log(res.user)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
 
     return (
         <div className='w-full px-4 sm:px-6 md:px-0 flex justify-center items-center min-h-full'>
@@ -82,7 +91,7 @@ const Login = () => {
                 {/* Google Sign In */}
                 <div className="">
                     <button
-                        onClick={''}
+                        onClick={handleGoogleSignIn}
                         className="btn w-full btn-outline  flex items-center justify-center gap-2 transition">
                         <FcGoogle size={20} /> Sign In with Google
                     </button>

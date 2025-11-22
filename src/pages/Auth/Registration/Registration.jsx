@@ -4,6 +4,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { Link } from 'react-router';
 import useAuth from '../../../hooks/useAuth';
+import axios from 'axios';
 
 const Registration = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -12,9 +13,47 @@ const Registration = () => {
     const { createUser, updateUserProfile, googleSignIn } = useAuth();
 
     const handleRegistration = (data) => {
+
+        const profileImage = data.photo[0];
+
         createUser(data.email, data.password)
             .then((res) =>{
-                console.log(res.user);
+                // console.log(res.user);
+                // Store the image in form data
+                const formData = new FormData();
+                formData.append("image", profileImage)
+
+                // Send the photo to store and get the url
+                const image_Api_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key}`
+
+                axios.post(image_Api_URL, formData)
+                .then(res => {
+                    console.log("After Image Upload", res.data.data.url)
+
+                    // Update User Profile to firebase
+                    // const userProfile = {
+                    //     displayName: data.name,
+                    //     photoURL: res.data.data.url,
+                    // }
+
+                    updateUserProfile(data.name, res.data.data.url)
+                    .then(() => {
+                        console.log("user profile updated")
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
+                })
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
+    const handleGoogleSignIn = () => {
+        googleSignIn()
+            .then(res => {
+                console.log(res.user)
             })
             .catch(error => {
                 console.log(error)
@@ -43,13 +82,14 @@ const Registration = () => {
                             placeholder="Enter your name" />
                         {errors.name?.type === "required" && <p className='text-red-500'>Name is required</p>}
 
-                        {/* Photo URL */}
-                        <label className="label text-gray-800 font-medium">Photo URL</label>
+                        {/* Photo */}
+                        <label className="label text-gray-800 font-medium">Photo</label>
                         <input
-                            type="text"
-                            {...register("photoURL")}
-                            className="input w-full border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-gray-500 px-4"
+                            type="file"
+                            {...register("photo", { required: true })}
+                            className="file-input w-full border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-gray-500 px-0"
                             placeholder="Paste your photo link" />
+                            {errors.photo?.type === "required" && <p className='text-red-500'>Photo is required</p>}
 
                         {/* Email */}
                         <label className="label text-gray-800 font-medium">Email Address</label>
@@ -112,7 +152,7 @@ const Registration = () => {
                 {/* Google Sign Up */}
                 <div className="">
                     <button
-                        onClick={''}
+                        onClick={handleGoogleSignIn}
                         className="btn w-full btn-outline  flex items-center justify-center gap-2 transition">
                         <FcGoogle size={20} /> Sign Up with Google
                     </button>
