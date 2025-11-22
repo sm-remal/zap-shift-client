@@ -39,3 +39,34 @@ body{
   }
 }
 
+
+
+/* Custom Swiper pagination between arrows */
+.custom-pagination.swiper-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* inactive bullets */
+.custom-pagination .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: #b8dfe0;
+  border-radius: 50%;
+  opacity: 1;
+}
+
+/* active bullet */
+.custom-pagination .swiper-pagination-bullet-active {
+  width: 12px;
+  height: 12px;
+  background: #003B3A;
+}
+
+/* Arrow shadows */
+.prevBtn, .nextBtn {
+  box-shadow: 0 6px 16px rgba(2,6,23,0.06);
+}
+
+

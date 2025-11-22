@@ -20,20 +20,26 @@ const HowItWorks = () => {
             description: "From personal packages to business shipments — we deliver on time, every time."
         },
     ]
+
     return (
         <div className='px-4 mt-10'>
             <h2 className='text-3xl text-gray-700 font-bold my-8 text-center'>How It Works</h2>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5'>
-                {
-                    information.map((info, index) =>
 
-                        <div key={index} className='p-5 rounded-2xl bg-white space-y-3'>
-                            <img src={bookingIcon} alt="" />
-                            <h2 className='text-md font-bold text-gray-600'>{info.title}</h2>
-                            <p className='text-sm'>{info.description}</p>
-                        </div>
-                    )
-                }
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5'>
+                {information.map((info, index) => (
+
+                    <div
+                        key={index}
+                        className='p-5 rounded-2xl bg-white space-y-3 shadow-md 
+                                   hover:shadow-xl transform transition-all duration-300 
+                                   hover:scale-105 cursor-pointer'
+                    >
+                        <img src={bookingIcon} alt="" className="w-12 h-12" />
+                        <h2 className='text-md font-bold text-gray-700'>{info.title}</h2>
+                        <p className='text-sm text-gray-600'>{info.description}</p>
+                    </div>
+
+                ))}
             </div>
         </div>
     );

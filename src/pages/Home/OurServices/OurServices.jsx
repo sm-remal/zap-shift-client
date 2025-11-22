@@ -38,13 +38,21 @@ const OurServices = () => {
                 {
                     services.map((service, index) =>
 
-                        <div key={index} className='p-5 rounded-2xl bg-white space-y-3 text-center py-10 hover:bg-primary'>
+                        <div
+                            key={index}
+                            className='p-5 rounded-2xl bg-white space-y-3 text-center py-10 transition-all duration-300 ease-in-out hover:bg-primary cursor-pointer'>
                             <div className='flex justify-center items-center'>
-                                <img src={serviceIcon} alt="" className='p-4 rounded-full bg-red-50' />
+                                <img src={serviceIcon} alt=""
+                                    className='p-4 rounded-full bg-red-50 transition-all duration-300' />
                             </div>
-                            <h2 className='text-md font-bold text-gray-600'>{service.title}</h2>
-                            <p className='text-sm'>{service.description}</p>
+                            <h2 className='text-md font-bold text-gray-600 group-hover:text-white transition-all duration-300'>
+                                {service.title}
+                            </h2>
+                            <p className='text-sm transition-all duration-300'>
+                                {service.description}
+                            </p>
                         </div>
+
                     )
                 }
             </div>
