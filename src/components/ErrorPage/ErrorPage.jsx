@@ -1,6 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router";
-import { AlertTriangle } from "lucide-react";  
+import { useNavigate } from "react-router"; 
 import errorImg from "../../assets/404-error.png";
 
 const ErrorPage = () => {
