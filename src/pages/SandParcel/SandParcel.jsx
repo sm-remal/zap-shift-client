@@ -35,7 +35,8 @@ const SendParcel = () => {
     const isDocument = data.parcelType === "Document"
     const isSameDistrict = data.senderDistrict === data.receiverDistrict;
 
-    const parcelWeight = parseFloat(data.parcelWeight);
+    const parcelWeight = parseFloat(data.parcelWeight) || 0;
+
 
     let cost = 0;
     if (isDocument) {
@@ -52,8 +53,9 @@ const SendParcel = () => {
         cost = minCharge + extraCharge
       }
     }
-
+    data.cost = cost;
     console.log(cost)
+
     Swal.fire({
       title: "Agree with the cost?",
       text: `You will be charged ${cost} taka!`,
