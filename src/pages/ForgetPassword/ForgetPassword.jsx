@@ -23,12 +23,12 @@ const ForgetPassword = () => {
         if (!email) return alert("Please enter your email!");
 
         setLoading(true);
-        alert("Sending reset email...", { id: "reset-email" });
+        alert("Sending reset email...");
 
         try {
             await forgetPassword(email);
 
-            alert("Reset email sent! Check your inbox.", { id: "reset-email" });
+            alert("Reset email sent! Check your inbox.");
 
             setEmail("");
 

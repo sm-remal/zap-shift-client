@@ -21,7 +21,7 @@ const Registration = () => {
 
         createUser(data.email, data.password)
             .then((res) => {
-                // console.log(res.user);
+                console.log(res.user);
                 // Store the image in form data
                 const formData = new FormData();
                 formData.append("image", profileImage)
