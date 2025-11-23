@@ -7,6 +7,9 @@ import ErrorPage from "../components/ErrorPage/ErrorPage";
 import AuthLayout from "../layouts/AuthLayout";
 import Login from "../pages/Auth/Login/Login";
 import Registration from "../pages/Auth/Registration/Registration";
+import Rider from "../pages/Rider/Rider";
+import PrivateRoutes from "./PrivateRoutes";
+import ForgetPassword from "../pages/ForgetPassword/ForgetPassword";
 
 
 
@@ -28,6 +31,10 @@ export const router = createBrowserRouter([
         {
             path: "about",
             Component: About
+        },
+        {
+            path: "rider",
+            element: <PrivateRoutes><Rider></Rider></PrivateRoutes>
         }
     ]
   },
@@ -42,6 +49,10 @@ export const router = createBrowserRouter([
       {
         path: "registration",
         Component: Registration,
+      },
+      {
+        path: "forget-password",
+        Component: ForgetPassword,
       }
     ]
   }

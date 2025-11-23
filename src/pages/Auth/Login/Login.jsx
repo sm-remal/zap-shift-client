@@ -1,29 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
-import { Link } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import useAuth from '../../../hooks/useAuth';
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const [email, setEmail] = useState("");
 
+    // react-hook-form 
+    const { register, handleSubmit, formState: { errors }, watch } = useForm();
+
+    // useAuth
     const { signInUser, googleSignIn } = useAuth();
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    //  Find the current value
+    const watchedEmail = watch("email");
+
+    // watchedEmail set to email state 
+    useEffect(() => {
+        setEmail(watchedEmail || "");
+    }, [watchedEmail]);
 
     const handleLogin = (data) => {
         signInUser(data.email, data.password)
             .then((res) => {
                 console.log(res.user);
+                navigate(location.state || "/");
             })
             .catch(error => {
                 console.log(error)
             })
     }
+
     const handleGoogleSignIn = () => {
         googleSignIn()
             .then(res => {
                 console.log(res.user)
+                navigate(location.state || "/");
             })
             .catch(error => {
                 console.log(error)
@@ -33,7 +51,8 @@ const Login = () => {
     return (
         <div className='w-full px-4 sm:px-6 md:px-0 flex justify-center items-center min-h-full'>
             <div className="card-body w-full max-w-md">
-                {/* Heading */}
+
+                {/* ======= Heading ======= */}
                 <div className='flex flex-col justify-center mb-4 text-center space-y-4'>
                     <h1 className="text-3xl font-bold text-gray-700">
                         Login Your Account
@@ -43,16 +62,20 @@ const Login = () => {
 
                 <form onSubmit={handleSubmit(handleLogin)}>
                     <fieldset className="fieldset">
-                        {/* Email */}
+
+                        {/* ======= Email Input ======= */}
                         <label className="label text-gray-800 font-medium">Email Address</label>
                         <input
                             type="email"
                             {...register("email", { required: true })}
                             className="input w-full border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-gray-500 px-4"
-                            placeholder="example@email.com" />
-                        {errors.email?.type === "required" && <p className='text-red-500'>Email is required</p>}
+                            placeholder="example@email.com"
+                        />
+                        {errors.email?.type === "required" && (
+                            <p className='text-red-500'>Email is required</p>
+                        )}
 
-                        {/* Password */}
+                        {/* ======= Password ======= */}
                         <label className="label text-gray-800 font-medium">Password</label>
                         <div className="relative flex items-center">
                             <input
@@ -63,48 +86,78 @@ const Login = () => {
                                     pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
                                 })}
                                 className="input w-full border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-gray-500 pr-12 px-4"
-                                placeholder="Enter a strong password" />
+                                placeholder="Enter a strong password"
+                            />
                             <div
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-4 text-gray-600 cursor-pointer z-10">
+                                className="absolute right-4 text-gray-600 cursor-pointer z-10"
+                            >
                                 {showPassword ? <FaEye size={18} /> : <FaEyeSlash size={18} />}
                             </div>
-
                         </div>
-                        {errors.password?.type === "required" && <p className='text-red-500'>Password is required</p>}
-                        {errors.password?.type === "minLength" && <p className='text-red-500'>Password must be 6 characters or longer</p>}
+
+                        {/* Password Errors */}
+                        {errors.password?.type === "required" && (
+                            <p className='text-red-500'>Password is required</p>
+                        )}
+                        {errors.password?.type === "minLength" && (
+                            <p className='text-red-500'>Password must be 6 characters or longer</p>
+                        )}
                         {errors.password?.type === "pattern" && (
                             <p className='text-red-500'>
                                 Password must include uppercase, lowercase, number & special character
                             </p>
                         )}
-                        {/* Sign Up Button */}
+
+                        {/* ======= Forgot Password Link ======= */}
+                        <div>
+                            <Link
+                                to="/forget-password"
+                                state={{ email }}
+                                className="link link-hover"
+                                onClick={() =>
+                                    navigate("/forget-password", { state: { email } })
+                                }
+                            >
+                                Forgot password?
+                            </Link>
+                        </div>
+
+                        {/* ======= Sign In Button ======= */}
                         <button className="btn w-full bg-primary font-semibold mt-4 shadow-sm hover:shadow-lg transition-all duration-300">
                             Sign In
                         </button>
+
                     </fieldset>
                 </form>
 
                 {/* Divider */}
                 <div className="divider text-gray-400">or</div>
 
-                {/* Google Sign In */}
-                <div className="">
+                {/* ======= Google Sign In ======= */}
+                <div>
                     <button
                         onClick={handleGoogleSignIn}
-                        className="btn w-full btn-outline  flex items-center justify-center gap-2 transition">
+                        className="btn w-full btn-outline flex items-center justify-center gap-2 transition"
+                    >
                         <FcGoogle size={20} /> Sign In with Google
                     </button>
                 </div>
 
+                {/* Footer */}
                 <div className="text-center mt-3 pb-16">
                     <p className="font-medium text-gray-700">
                         Already have an account?{" "}
-                        <Link to="/registration" className="text-green-500 underline font-semibold">
+                        <Link
+                            state={location.state}
+                            to="/registration"
+                            className="text-green-500 underline font-semibold"
+                        >
                             Registration
                         </Link>
                     </p>
                 </div>
+
             </div>
         </div>
     );

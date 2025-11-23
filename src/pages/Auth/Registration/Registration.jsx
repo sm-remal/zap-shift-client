@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
-import { Link } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import useAuth from '../../../hooks/useAuth';
 import axios from 'axios';
 
@@ -12,12 +12,15 @@ const Registration = () => {
 
     const { createUser, updateUserProfile, googleSignIn } = useAuth();
 
+    const location = useLocation();
+    const navigate = useNavigate();
+
     const handleRegistration = (data) => {
 
         const profileImage = data.photo[0];
 
         createUser(data.email, data.password)
-            .then((res) =>{
+            .then((res) => {
                 // console.log(res.user);
                 // Store the image in form data
                 const formData = new FormData();
@@ -27,23 +30,23 @@ const Registration = () => {
                 const image_Api_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key}`
 
                 axios.post(image_Api_URL, formData)
-                .then(res => {
-                    console.log("After Image Upload", res.data.data.url)
+                    .then(res => {
+                        console.log("After Image Upload", res.data.data.url)
 
-                    // Update User Profile to firebase
-                    // const userProfile = {
-                    //     displayName: data.name,
-                    //     photoURL: res.data.data.url,
-                    // }
+                        // Update User Profile to firebase
+                        // const userProfile = {
+                        //     displayName: data.name,
+                        //     photoURL: res.data.data.url,
+                        // }
 
-                    updateUserProfile(data.name, res.data.data.url)
-                    .then(() => {
-                        console.log("user profile updated")
+                        updateUserProfile(data.name, res.data.data.url)
+                            .then(() => {
+                                console.log("user profile updated")
+                            })
+                            .catch(error => {
+                                console.log(error)
+                            })
                     })
-                    .catch(error => {
-                        console.log(error)
-                    })
-                })
             })
             .catch(error => {
                 console.log(error)
@@ -54,6 +57,7 @@ const Registration = () => {
         googleSignIn()
             .then(res => {
                 console.log(res.user)
+                navigate(location.state || "/");
             })
             .catch(error => {
                 console.log(error)
@@ -89,7 +93,7 @@ const Registration = () => {
                             {...register("photo", { required: true })}
                             className="file-input w-full border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-gray-500 px-0"
                             placeholder="Paste your photo link" />
-                            {errors.photo?.type === "required" && <p className='text-red-500'>Photo is required</p>}
+                        {errors.photo?.type === "required" && <p className='text-red-500'>Photo is required</p>}
 
                         {/* Email */}
                         <label className="label text-gray-800 font-medium">Email Address</label>
@@ -161,7 +165,10 @@ const Registration = () => {
                 <div className="text-center mt-3 pb-16">
                     <p className="font-medium text-gray-700">
                         Already have an account?{" "}
-                        <Link to="/login" className="text-green-500 underline font-semibold">
+                        <Link
+                            state={location.state}
+                            to="/login"
+                            className="text-green-500 underline font-semibold">
                             Login
                         </Link>
                     </p>
