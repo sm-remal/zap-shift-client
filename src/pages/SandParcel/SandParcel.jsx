@@ -1,11 +1,64 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
+import { useLoaderData } from "react-router";
+import Swal from "sweetalert2";
 
 const SendParcel = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, control, formState: { errors } } = useForm();
+  const serviceCenters = useLoaderData()
+  const regionsDuplicate = serviceCenters.map(c => c.region)
+  const regions = [...new Set(regionsDuplicate)];
+  const senderRegion = useWatch({ control, name: "senderRegion" })
+  const receiverRegion = useWatch({ control, name: "receiverRegion" })
 
-  const onSubmit = (data) => {
-    console.log(data); 
+  const districtsByRegion = region => {
+    const regionDistricts = serviceCenters.filter(c => c.region === region);
+    const districts = regionDistricts.map(d => d.district);
+    return districts;
+  }
+
+
+  const handleSendParcel = (data) => {
+    console.log(data);
+    const isDocument = data.parcelType === "Document"
+    const isSameDistrict = data.senderDistrict === data.receiverDistrict;
+
+    const parcelWeight = parseFloat(data.parcelWeight);
+
+    let cost = 0;
+    if (isDocument) {
+      cost = isSameDistrict ? 60 : 80;
+    }
+    else {
+      if (parcelWeight < 3) {
+        cost = isSameDistrict ? 110 : 150;
+      }
+      else {
+        const minCharge = isSameDistrict ? 110 : 150;
+        const extraWeight = parcelWeight - 3;
+        const extraCharge = isSameDistrict ? extraWeight * 40 : extraWeight * 40 + 40;
+        cost = minCharge + extraCharge
+      }
+    }
+
+    console.log(cost)
+    Swal.fire({
+      title: "Agree with the cost?",
+      text: `You will be charged ${cost} taka!`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "I agree"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success"
+        });
+      }
+    });
   };
 
   return (
@@ -41,7 +94,7 @@ const SendParcel = () => {
       </div>
 
       {/* Form Start */}
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(handleSendParcel)}>
         {/* Parcel Info */}
         <div className="grid grid-cols-2 gap-6 mb-10">
           <input
@@ -64,34 +117,63 @@ const SendParcel = () => {
             <h3 className="font-bold mb-4">Sender Details</h3>
 
             <div className="grid gap-4">
+
+              {/* ========== Sender Name ========== */}
               <input
                 {...register("senderName")}
                 className="input input-bordered w-full"
                 placeholder="Sender Name"
               />
 
+              {/* ========== Sender Email ========== */}
+              <input
+                {...register("senderEmail")}
+                className="input input-bordered w-full"
+                placeholder="Sender Email"
+              />
+
+              {/* ========== Sender Address ========== */}
               <input
                 {...register("senderAddress")}
                 className="input input-bordered w-full"
                 placeholder="Address"
               />
 
+              {/* ========== Sender Contact ========== */}
               <input
                 {...register("senderPhone")}
                 className="input input-bordered w-full"
                 placeholder="Sender Phone No"
               />
 
+
+              {/* ========== Sender Region ========== */}
+              <select
+                {...register("senderRegion")}
+                className="select select-bordered w-full"
+              >
+                <option>Select your Region</option>
+                {
+                  regions.map((r, i) => <option key={i} value={r}>{r}</option>)
+                }
+
+
+                {/* ========== Sender District ========== */}
+              </select>
+
               <select
                 {...register("senderDistrict")}
                 className="select select-bordered w-full"
               >
                 <option>Select your District</option>
-                <option>Dhaka</option>
-                <option>Chattogram</option>
-                <option>Rajshahi</option>
+                {
+                  districtsByRegion(senderRegion).map((r, i) => <option key={i} value={r}>{r}</option>)
+                }
+
+
               </select>
 
+              {/* ========== Sender Textarea ========== */}
               <textarea
                 {...register("pickupInstruction")}
                 className="textarea textarea-bordered w-full"
@@ -105,34 +187,57 @@ const SendParcel = () => {
             <h3 className="font-bold mb-4">Receiver Details</h3>
 
             <div className="grid gap-4">
+              {/* ========== Receiver Name ========== */}
               <input
                 {...register("receiverName")}
                 className="input input-bordered w-full"
                 placeholder="Receiver Name"
               />
 
+              {/* ========== Receiver Email ========== */}
+              <input
+                {...register("receiverEmail")}
+                className="input input-bordered w-full"
+                placeholder="Receiver Email"
+              />
+
+              {/* ========== Receiver Address ========== */}
               <input
                 {...register("receiverAddress")}
                 className="input input-bordered w-full"
                 placeholder="Receiver Address"
               />
 
+              {/* ========== Receiver Contact ========== */}
               <input
                 {...register("receiverContact")}
                 className="input input-bordered w-full"
                 placeholder="Receiver Contact No"
               />
 
+              {/* ========== Receiver Region ========== */}
+              <select
+                {...register("receiverRegion")}
+                className="select select-bordered w-full"
+              >
+                <option>Select your Region</option>
+                {
+                  regions.map((r, i) => <option key={i} value={r}>{r}</option>)
+                }
+              </select>
+
+              {/* ========== Receiver District ========== */}
               <select
                 {...register("receiverDistrict")}
                 className="select select-bordered w-full"
               >
                 <option>Select your District</option>
-                <option>Dhaka</option>
-                <option>Chattogram</option>
-                <option>Rajshahi</option>
+                {
+                  districtsByRegion(receiverRegion).map((r, i) => <option key={i} value={r}>{r}</option>)
+                }
               </select>
 
+              {/* ========== Receiver Textarea ========== */}
               <textarea
                 {...register("deliveryInstruction")}
                 className="textarea textarea-bordered w-full"

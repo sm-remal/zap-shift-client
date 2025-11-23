@@ -27,7 +27,7 @@ export const router = createBrowserRouter([
         {
             path: "coverage",
             Component: Coverage,
-            loader: () => fetch("/services_area.json")
+            loader: () => fetch("/services_area.json").then(res => res.json()),
         },
         {
             path: "about",
@@ -39,6 +39,7 @@ export const router = createBrowserRouter([
         },
         {
             path: "send-parcel",
+            loader: () => fetch("/services_area.json").then(res => res.json()),
             element: <PrivateRoutes><SandParcel></SandParcel></PrivateRoutes>
         }
     ]
