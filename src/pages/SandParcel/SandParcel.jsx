@@ -2,9 +2,21 @@ import React from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useLoaderData } from "react-router";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAuth from "../../hooks/useAuth";
+
 
 const SendParcel = () => {
-  const { register, handleSubmit, control, formState: { errors } } = useForm();
+  const { register, 
+    handleSubmit, 
+    control, 
+    // formState: { errors } 
+  } = useForm();
+  const {user} = useAuth()
+  const axiosSecure = useAxiosSecure()
+
+
+
   const serviceCenters = useLoaderData()
   const regionsDuplicate = serviceCenters.map(c => c.region)
   const regions = [...new Set(regionsDuplicate)];
@@ -52,11 +64,19 @@ const SendParcel = () => {
       confirmButtonText: "I agree"
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success"
-        });
+
+        // Save to the parcel info to the Database
+
+        axiosSecure.post("/parcels", data)
+        .then(res => {
+          console.log('After saving parcel', res.data)
+        })
+
+        // Swal.fire({
+        //   title: "Deleted!",
+        //   text: "Your file has been deleted.",
+        //   icon: "success"
+        // });
       }
     });
   };
@@ -121,6 +141,7 @@ const SendParcel = () => {
               {/* ========== Sender Name ========== */}
               <input
                 {...register("senderName")}
+                defaultValue={user?.displayName}
                 className="input input-bordered w-full"
                 placeholder="Sender Name"
               />
@@ -128,6 +149,7 @@ const SendParcel = () => {
               {/* ========== Sender Email ========== */}
               <input
                 {...register("senderEmail")}
+                defaultValue={user?.email}
                 className="input input-bordered w-full"
                 placeholder="Sender Email"
               />

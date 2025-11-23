@@ -27,6 +27,13 @@ const NavBar = () => {
         <li className='font-semibold'><NavLink>Pricing</NavLink></li>
         <li className='font-semibold'><NavLink>Blog</NavLink></li>
         <li className='font-semibold'><NavLink>Contact</NavLink></li>
+
+        {
+            user && <>
+                <li className='font-semibold'><NavLink to={"/dashboard/my-parcels"}>My Parcels</NavLink></li>
+            </>
+        }
+
     </>
     return (
         <div className="navbar bg-base-100 shadow-sm">
@@ -41,7 +48,7 @@ const NavBar = () => {
                         {links}  
                     </ul>
                 </div>
-                <a className="px-4 cursor-pointer"><Logo></Logo></a>
+                <span className="px-4 cursor-pointer"><Logo></Logo></span>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
