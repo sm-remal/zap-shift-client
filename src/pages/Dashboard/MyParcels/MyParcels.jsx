@@ -2,6 +2,10 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import useAuth from '../../../hooks/useAuth';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import { FaRegEdit } from "react-icons/fa";
+import { FaMagnifyingGlass, FaRegTrashCan } from "react-icons/fa6";
+import Swal from 'sweetalert2';
+import { Link } from 'react-router';
 
 const MyParcels = () => {
     const { user } = useAuth();
@@ -15,13 +19,42 @@ const MyParcels = () => {
     //     }
     // })
 
-    const { data: parcels = [] } = useQuery({
+    const { data: parcels = [], refetch } = useQuery({
         queryKey: ["myParcels", user?.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/parcels?email=${user.email}`);
             return res.data;
         }
     });
+
+    const handleParcelDelete = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                axiosSecure.delete(`/parcels/${id}`)
+                    .then(res => {
+                        if (res.data.deletedCount) {
+
+                            refetch()
+
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your parcel request has been deleted.",
+                                icon: "success"
+                            });
+                        }
+                    })
+            }
+        });
+    }
 
 
     return (
@@ -38,7 +71,8 @@ const MyParcels = () => {
                                 <th>Weight (Kg)</th>
                                 <th>Date & Time</th>
                                 <th>Cost</th>
-                                <th>Payment Status</th>
+                                <th>Payment</th>
+                                <th>Delivery Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -52,8 +86,24 @@ const MyParcels = () => {
                                         <td>{parcel.parcelWeight}</td>
                                         <td>{parcel.createdAt}</td>
                                         <td>{parcel.cost}</td>
-                                        <td>paid</td>
-                                        <td>paid</td>
+                                        <td>
+                                            {
+                                            parcel.paymentStatus === "paid" ? 
+                                            <span className='text-green-500 font-medium'>Paid</span> :
+                                            <Link to={`/dashboard/payment/${parcel._id}`} className='btn btn-sm bg-primary'>
+                                                pay
+                                            </Link>
+                                            
+                                            }
+                                        </td>
+                                        <td>{parcel.deliveryStatus}</td>
+                                        <td className='flex gap-4'>
+                                            <button className='btn btn-square hover:bg-primary'><FaRegEdit /></button>
+                                            <button className='btn btn-square hover:bg-primary'><FaMagnifyingGlass /></button>
+                                            <button
+                                                onClick={() => handleParcelDelete(parcel._id)}
+                                                className='btn btn-square hover:bg-primary'><FaRegTrashCan /></button>
+                                        </td>
                                     </tr>
                                 )
                             }
