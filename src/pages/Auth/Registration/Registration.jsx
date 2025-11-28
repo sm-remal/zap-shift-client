@@ -5,6 +5,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { Link, useLocation, useNavigate } from 'react-router';
 import useAuth from '../../../hooks/useAuth';
 import axios from 'axios';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const Registration = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -14,6 +15,8 @@ const Registration = () => {
 
     const location = useLocation();
     const navigate = useNavigate();
+
+    const axiosSecure = useAxiosSecure();
 
     const handleRegistration = (data) => {
 
@@ -31,17 +34,26 @@ const Registration = () => {
 
                 axios.post(image_Api_URL, formData)
                     .then(res => {
-                        console.log("After Image Upload", res.data.data.url)
+                        const photoURL = res.data.data.url
 
-                        // Update User Profile to firebase
-                        // const userProfile = {
-                        //     displayName: data.name,
-                        //     photoURL: res.data.data.url,
-                        // }
+                        // Create user in the Database
+                        const userInfo = {
+                            email: data.email,
+                            displayName: data.name,
+                            photoURL: photoURL,
+                        }
+                        axiosSecure.post("/users", userInfo)
+                            .then(res => {
+                                if (res.data.insertedId) {
+                                    console.log("User created in the database")
+                                }
+                            })
 
+                        // Update user profile to firebase
                         updateUserProfile(data.name, res.data.data.url)
                             .then(() => {
                                 console.log("user profile updated")
+                                navigate(location.state || "/");
                             })
                             .catch(error => {
                                 console.log(error)
@@ -57,7 +69,21 @@ const Registration = () => {
         googleSignIn()
             .then(res => {
                 console.log(res.user)
-                navigate(location.state || "/");
+
+                // Create user in the Database
+                const userInfo = {
+                    email: res.user.email,
+                    displayName: res.user.name,
+                    photoURL: res.user.photoURL,
+                }
+
+                axiosSecure.post("/users", userInfo)
+                    .then(res => {
+                        if (res.data.insertedId) {
+                            console.log("User data has been stored in the database")
+                        }
+                        navigate(location.state || "/");
+                    })
             })
             .catch(error => {
                 console.log(error)

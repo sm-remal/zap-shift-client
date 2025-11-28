@@ -4,10 +4,13 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { Link, useLocation, useNavigate } from 'react-router';
 import useAuth from '../../../hooks/useAuth';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState("");
+
+    const axiosSecure = useAxiosSecure();
 
     // react-hook-form 
     const { register, handleSubmit, formState: { errors }, watch } = useForm();
@@ -41,7 +44,21 @@ const Login = () => {
         googleSignIn()
             .then(res => {
                 console.log(res.user)
-                navigate(location.state || "/");
+
+                // Create user in the Database
+                const userInfo = {
+                    email: res.user.email,
+                    displayName: res.user.name,
+                    photoURL: res.user.photoURL,
+                }
+
+                axiosSecure.post("/users", userInfo)
+                    .then(res => {
+                        if (res.data.insertedId) {
+                            console.log("User data has been stored in the database")
+                        }
+                        navigate(location.state || "/");
+                    })
             })
             .catch(error => {
                 console.log(error)
