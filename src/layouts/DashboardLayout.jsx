@@ -5,6 +5,7 @@ import { IoHomeOutline } from "react-icons/io5";
 import { IoSettingsOutline } from "react-icons/io5";
 import { RiSidebarUnfoldLine } from "react-icons/ri";
 import Logo from '../components/Logo/Logo';
+import { FaRegCreditCard } from 'react-icons/fa';
 
 const DashboardLayout = () => {
     return (
@@ -44,9 +45,19 @@ const DashboardLayout = () => {
                         <li>
                             <NavLink 
                             className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                            data-tip="My Parcels"
                             to={"/dashboard/my-parcels"}>
                             <BsBoxSeam size={20}/>
                             <span className="is-drawer-close:hidden">My parcels</span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink 
+                            className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                            data-tip="Payment History"
+                            to={"/dashboard/payment-history"}>
+                            <FaRegCreditCard size={20} />
+                            <span className="is-drawer-close:hidden">Payment History</span>
                             </NavLink>
                         </li>
 
