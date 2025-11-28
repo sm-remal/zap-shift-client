@@ -48,15 +48,13 @@ const Login = () => {
                 // Create user in the Database
                 const userInfo = {
                     email: res.user.email,
-                    displayName: res.user.name,
+                    displayName: res.user.displayName,
                     photoURL: res.user.photoURL,
                 }
 
                 axiosSecure.post("/users", userInfo)
                     .then(res => {
-                        if (res.data.insertedId) {
-                            console.log("User data has been stored in the database")
-                        }
+                        console.log("User data has been stored", res.data)
                         navigate(location.state || "/");
                     })
             })
