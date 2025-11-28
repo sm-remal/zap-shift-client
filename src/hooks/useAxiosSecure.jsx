@@ -9,7 +9,7 @@ const instance = axios.create({
 
 const useAxiosSecure = () => {
 
-    const { user, logOut } = useAuth();
+    const { user, signOutUser } = useAuth();
     const navigate = useNavigate()
     // set token in the header for all the API call using axiosSecure hook
 
@@ -32,9 +32,9 @@ const useAxiosSecure = () => {
             const status = err.status;
             if (status === 401 || status === 403) {
                 // console.log("Log out the user for bad request");
-                logOut()
+                signOutUser()
                     .then(() => {
-                        navigate("/signup");
+                        navigate("/login");
                     })
             }
         })
@@ -45,7 +45,7 @@ const useAxiosSecure = () => {
             instance.interceptors.response.eject(responseInterceptor);
         }
 
-    }, [user, logOut, navigate])
+    }, [user, signOutUser, navigate])
 
     return instance;
 }
