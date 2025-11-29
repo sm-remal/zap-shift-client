@@ -5,7 +5,7 @@ import { IoHomeOutline } from "react-icons/io5";
 import { IoSettingsOutline } from "react-icons/io5";
 import { RiSidebarUnfoldLine } from "react-icons/ri";
 import Logo from '../components/Logo/Logo';
-import { FaRegCreditCard } from 'react-icons/fa';
+import { FaMotorcycle, FaRegCreditCard } from 'react-icons/fa';
 
 const DashboardLayout = () => {
     return (
@@ -58,6 +58,15 @@ const DashboardLayout = () => {
                             to={"/dashboard/payment-history"}>
                             <FaRegCreditCard size={20} />
                             <span className="is-drawer-close:hidden">Payment History</span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink 
+                            className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                            data-tip="Approve Riders"
+                            to={"/dashboard/approve-riders"}>
+                            <FaMotorcycle size={20} />
+                            <span className="is-drawer-close:hidden">Approve Riders</span>
                             </NavLink>
                         </li>
 

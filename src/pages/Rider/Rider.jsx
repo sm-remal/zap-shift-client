@@ -10,6 +10,7 @@ const Rider = () => {
         register,
         handleSubmit,
         control,
+        reset,
         formState: { errors },
     } = useForm();
 
@@ -28,7 +29,14 @@ const Rider = () => {
     };
 
     const handleRiderApplication = (data) => {
-        console.log("FORM DATA:", data);
+        // console.log("FORM DATA:", data);
+        axiosSecure.post("/riders", data)
+        .then(res => {
+            if(res.data.insertedId){
+                alert("Your Application has been submitted. Wait for conformation!!")
+                reset();
+            }
+        })
     };
 
     return (
