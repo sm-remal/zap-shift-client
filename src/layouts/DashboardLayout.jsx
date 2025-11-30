@@ -5,9 +5,11 @@ import { IoHomeOutline } from "react-icons/io5";
 import { IoSettingsOutline } from "react-icons/io5";
 import { RiSidebarUnfoldLine } from "react-icons/ri";
 import Logo from '../components/Logo/Logo';
-import { FaMotorcycle, FaRegCreditCard } from 'react-icons/fa';
+import { FaMotorcycle, FaRegCreditCard, FaUsers } from 'react-icons/fa';
+import useRole from '../hooks/useRole';
 
 const DashboardLayout = () => {
+    const { role } = useRole();
     return (
         <div className="drawer lg:drawer-open max-w-screen-2xl m-auto max-xl:max-w-7xl max-lg:max-w-5xl max-md:max-w-3xl max-sm:max-w-screen-sm">
             <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -16,7 +18,7 @@ const DashboardLayout = () => {
                 <nav className="navbar w-full bg-base-300">
                     <label htmlFor="my-drawer-4" aria-label="open sidebar" className="btn btn-square btn-ghost">
                         {/* Sidebar toggle icon */}
-                        <RiSidebarUnfoldLine size={20}/>
+                        <RiSidebarUnfoldLine size={20} />
                     </label>
                     <div className="px-4"><Logo></Logo></div>
                 </nav>
@@ -24,7 +26,7 @@ const DashboardLayout = () => {
 
                 <Outlet></Outlet>
 
-                
+
             </div>
 
             <div className="drawer-side is-drawer-close:overflow-visible">
@@ -36,46 +38,59 @@ const DashboardLayout = () => {
                         <li>
                             <Link to={"/"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Homepage">
                                 {/* Home icon */}
-                                <IoHomeOutline size={20}/>
+                                <IoHomeOutline size={20} />
                                 <span className="is-drawer-close:hidden">Homepage</span>
                             </Link>
                         </li>
 
                         {/* Out Dashboard Links  */}
                         <li>
-                            <NavLink 
-                            className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                            data-tip="My Parcels"
-                            to={"/dashboard/my-parcels"}>
-                            <BsBoxSeam size={20}/>
-                            <span className="is-drawer-close:hidden">My parcels</span>
+                            <NavLink
+                                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                data-tip="My Parcels"
+                                to={"/dashboard/my-parcels"}>
+                                <BsBoxSeam size={20} />
+                                <span className="is-drawer-close:hidden">My parcels</span>
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink 
-                            className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                            data-tip="Payment History"
-                            to={"/dashboard/payment-history"}>
-                            <FaRegCreditCard size={20} />
-                            <span className="is-drawer-close:hidden">Payment History</span>
+                            <NavLink
+                                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                data-tip="Payment History"
+                                to={"/dashboard/payment-history"}>
+                                <FaRegCreditCard size={20} />
+                                <span className="is-drawer-close:hidden">Payment History</span>
                             </NavLink>
                         </li>
-                        <li>
-                            <NavLink 
-                            className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                            data-tip="Approve Riders"
-                            to={"/dashboard/approve-riders"}>
-                            <FaMotorcycle size={20} />
-                            <span className="is-drawer-close:hidden">Approve Riders</span>
-                            </NavLink>
-                        </li>
+                        {
+                            role === "admin" && <>
+                                <li>
+                                    <NavLink
+                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                        data-tip="Approve Riders"
+                                        to={"/dashboard/approve-riders"}>
+                                        <FaMotorcycle size={20} />
+                                        <span className="is-drawer-close:hidden">Approve Riders</span>
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink
+                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                        data-tip="Users Management"
+                                        to={"/dashboard/users-management"}>
+                                        <FaUsers size={20} />
+                                        <span className="is-drawer-close:hidden">Users Management</span>
+                                    </NavLink>
+                                </li>
+                            </>
+                        }
 
 
                         {/* List item */}
                         <li>
                             <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Settings">
                                 {/* Settings icon */}
-                                <IoSettingsOutline size={20}/>
+                                <IoSettingsOutline size={20} />
                                 <span className="is-drawer-close:hidden">Settings</span>
                             </button>
                         </li>

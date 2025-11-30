@@ -75,6 +75,11 @@ const ApproveRiders = () => {
 
                                 <td className='flex gap-3.5'>
                                     <button
+                                        
+                                        className='btn btn-sm hover:bg-primary'> View
+                                    </button>
+
+                                    <button
                                         onClick={() => handleApproval(rider)}
                                         className='btn btn-sm hover:bg-primary'><BsFillSendCheckFill size={20} />
                                     </button>
