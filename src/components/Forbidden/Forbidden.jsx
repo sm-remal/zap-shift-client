@@ -1,5 +1,5 @@
 import Lottie from "react-lottie";
-import forbiddenAnimation from "../../assets/json/forbidden.json";
+import forbiddenAnimation from '../../assets/json/forbidden.json';
 import { Link } from "react-router";
 const Forbidden = () => {
   return (

@@ -2,8 +2,10 @@ import React from 'react';
 import useAuth from '../hooks/useAuth';
 import Loading from '../components/Loading/Loading';
 import useRole from '../hooks/useRole';
+// import Forbidden from '../components/Forbidden/Forbidden'
+import NotAccess from '../components/NotAccess/NotAccess';
 
-const AdminRoute = () => {
+const AdminRoute = ({children}) => {
     const {loading} = useAuth();
     const {role, roleLoading} = useRole();
 
@@ -12,13 +14,9 @@ const AdminRoute = () => {
     }
 
     if(role !== "admin"){
-        return
+        return <NotAccess></NotAccess>
     }
-    return (
-        <div>
-            
-        </div>
-    );
+    return children;
 };
 
 export default AdminRoute;
