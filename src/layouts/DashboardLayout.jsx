@@ -7,6 +7,7 @@ import { RiSidebarUnfoldLine } from "react-icons/ri";
 import Logo from '../components/Logo/Logo';
 import { FaMotorcycle, FaRegCreditCard, FaUsers } from 'react-icons/fa';
 import useRole from '../hooks/useRole';
+import { MdOutlineDirectionsBike } from "react-icons/md";
 
 const DashboardLayout = () => {
     const { role } = useRole();
@@ -71,6 +72,15 @@ const DashboardLayout = () => {
                                         to={"/dashboard/approve-riders"}>
                                         <FaMotorcycle size={20} />
                                         <span className="is-drawer-close:hidden">Approve Riders</span>
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink
+                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                        data-tip="Assign Riders"
+                                        to={"/dashboard/assign-riders"}>
+                                        <MdOutlineDirectionsBike size={20}/>
+                                        <span className="is-drawer-close:hidden">Assign Riders</span>
                                     </NavLink>
                                 </li>
                                 <li>

@@ -72,6 +72,7 @@ const MyParcels = () => {
                                 <th>Date & Time</th>
                                 <th>Cost</th>
                                 <th>Payment</th>
+                                <th>Tracking Id</th>
                                 <th>Delivery Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -96,6 +97,7 @@ const MyParcels = () => {
                                             
                                             }
                                         </td>
+                                        <td>{parcel.trackingId}</td>
                                         <td>{parcel.deliveryStatus}</td>
                                         <td className='flex gap-4'>
                                             <button className='btn btn-square hover:bg-primary'><FaRegEdit /></button>
