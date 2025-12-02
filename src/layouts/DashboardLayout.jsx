@@ -8,6 +8,7 @@ import Logo from '../components/Logo/Logo';
 import { FaMotorcycle, FaRegCreditCard, FaTasks, FaUsers } from 'react-icons/fa';
 import useRole from '../hooks/useRole';
 import { MdOutlineDirectionsBike } from "react-icons/md";
+import { SiGoogletasks } from "react-icons/si";
 
 const DashboardLayout = () => {
     const { role } = useRole();
@@ -73,6 +74,15 @@ const DashboardLayout = () => {
                                         to={"/dashboard/assigned-delivery"}>
                                         <FaTasks size={20} />
                                         <span className="is-drawer-close:hidden">Assigned Delivery</span>
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink
+                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                        data-tip="Completed Delivery"
+                                        to={"/dashboard/completed-delivery"}>
+                                        <SiGoogletasks size={20}/>
+                                        <span className="is-drawer-close:hidden">Completed Delivery</span>
                                     </NavLink>
                                 </li>
                             </>

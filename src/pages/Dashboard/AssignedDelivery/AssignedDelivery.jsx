@@ -16,8 +16,11 @@ const AssignedDelivery = () => {
         }
     })
 
-    const handelAcceptDelivery = (parcel) => {
-        const statusInfo = { deliveryStatus: "rider_arriving" };
+    const handelDeliveryStatusUpdate = (parcel, status) => {
+
+        let message = `Parcel status is updated with ${status.split("_").join(" ")}`
+
+        const statusInfo = { deliveryStatus: status };
         axiosSecure.patch(`parcels/${parcel._id}/status`, statusInfo)
             .then(res => {
                 if (res.data.modifiedCount) {
@@ -25,7 +28,7 @@ const AssignedDelivery = () => {
                     Swal.fire({
                         position: "center",
                         icon: "success",
-                        title: "Thank you for accepting.",
+                        title: message,
                         showConfirmButton: false,
                         timer: 1500
                     });
@@ -44,7 +47,7 @@ const AssignedDelivery = () => {
                             <th>No.</th>
                             <th>Name</th>
                             <th>Confirm</th>
-                            <th>Favorite Color</th>
+                            <th>Other Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,14 +56,30 @@ const AssignedDelivery = () => {
                                 <th>{index + 1}</th>
                                 <td>{parcel.parcelName}</td>
                                 <td className='flex gap-3.5'>
-                                    <button
-                                        onClick={() => handelAcceptDelivery(parcel)}
-                                        className='btn btn-primary text-black'>
-                                        Accept
-                                    </button>
-                                    <button className='btn btn-warning text-black'>Accept</button>
+                                    {
+                                        parcel.deliveryStatus === "driver_assigned"
+                                        ? <>
+                                            <button
+                                                onClick={() => handelDeliveryStatusUpdate(parcel, "rider_arriving")}
+                                                className='btn btn-primary text-black'>
+                                                Accept
+                                            </button>
+                                            <button className='btn btn-warning text-black'>Accept</button>
+                                        </> : <span>Accepted</span>
+                                    }
                                 </td>
-                                <td>Blue</td>
+                                <td className=''>
+                                    <button
+                                        onClick={() => handelDeliveryStatusUpdate(parcel, "parcel_picked_up")}
+                                        className='btn btn-primary text-black'>
+                                        Mark as Picked Up
+                                    </button>
+                                    <button
+                                        onClick={() => handelDeliveryStatusUpdate(parcel, "parcel_delivered")}
+                                        className='btn btn-primary text-black mx-2'>
+                                        Mark as Delivered
+                                    </button>
+                                </td>
                             </tr>
                             )
                         }
@@ -68,7 +87,7 @@ const AssignedDelivery = () => {
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div >
     );
 };
 
