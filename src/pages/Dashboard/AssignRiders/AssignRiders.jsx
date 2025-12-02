@@ -35,7 +35,7 @@ const AssignRiders = () => {
         const riderAssignInfo = {
             riderId: rider._id,
             riderName: rider.name,
-            riderEmail: rider.emil,
+            riderEmail: rider.email,
             parcelId: selectedParcel._id,
         }
         axiosSecure.patch(`/parcels/${selectedParcel._id}`, riderAssignInfo)

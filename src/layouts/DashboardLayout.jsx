@@ -5,7 +5,7 @@ import { IoHomeOutline } from "react-icons/io5";
 import { IoSettingsOutline } from "react-icons/io5";
 import { RiSidebarUnfoldLine } from "react-icons/ri";
 import Logo from '../components/Logo/Logo';
-import { FaMotorcycle, FaRegCreditCard, FaUsers } from 'react-icons/fa';
+import { FaMotorcycle, FaRegCreditCard, FaTasks, FaUsers } from 'react-icons/fa';
 import useRole from '../hooks/useRole';
 import { MdOutlineDirectionsBike } from "react-icons/md";
 
@@ -63,6 +63,24 @@ const DashboardLayout = () => {
                                 <span className="is-drawer-close:hidden">Payment History</span>
                             </NavLink>
                         </li>
+                        {/* Riders Links  */}
+                        {
+                            role === "rider" && <>
+                                <li>
+                                    <NavLink
+                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                        data-tip="Assigned Delivery"
+                                        to={"/dashboard/assigned-delivery"}>
+                                        <FaTasks size={20} />
+                                        <span className="is-drawer-close:hidden">Assigned Delivery</span>
+                                    </NavLink>
+                                </li>
+                            </>
+                        }
+
+
+
+                        {/* Admin Links  */}
                         {
                             role === "admin" && <>
                                 <li>
