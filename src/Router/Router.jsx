@@ -23,6 +23,7 @@ import AdminRoute from "./AdminRoute";
 import AssignRiders from "../pages/Dashboard/AssignRiders/AssignRiders";
 import AssignedDelivery from "../pages/Dashboard/AssignedDelivery/AssignedDelivery";
 import RidersRoute from "./RidersRoute";
+import CompletedDelivery from "../pages/Dashboard/CompletedDelivery/CompletedDelivery";
 
 
 
@@ -104,6 +105,10 @@ export const router = createBrowserRouter([
       {
         path: "assigned-delivery",
         element: <RidersRoute><AssignedDelivery></AssignedDelivery></RidersRoute>
+      },
+      {
+        path: "completed-delivery",
+        element: <RidersRoute><CompletedDelivery></CompletedDelivery></RidersRoute>
       },
 
       // ========== Admin Only Routes ========== //
